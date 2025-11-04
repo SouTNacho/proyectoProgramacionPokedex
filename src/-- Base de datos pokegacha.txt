@@ -1,0 +1,36 @@
+-- Base de datos pokegacha
+CREATE DATABASE IF NOT EXISTS `pokegacha`
+  DEFAULT CHARACTER SET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;
+USE `pokegacha`;
+
+-- tabla usuario (id_user = PK)
+CREATE TABLE `usuario` (
+  `id_user` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(100),
+  `email` VARCHAR(100),
+  `pass` VARCHAR(255),
+  PRIMARY KEY (`id_user`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- tabla pokedex (id = PK) y relación con usuario.id_user
+CREATE TABLE `pokedex` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_user` INT(11),
+  `id_pokemon` INT(11),
+  `obtenido` TINYINT(1),
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_pokedex_usuario`
+    FOREIGN KEY (`id_user`) REFERENCES `usuario` (`id_user`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- tabla gacha_uso (sin PK visible en la imagen) y relación con usuario.id_user
+CREATE TABLE `gacha_uso` (
+  `id_user` INT(11),
+  `fecha` DATE,
+  `tiros_restantes` INT(11),
+  CONSTRAINT `fk_gacha_usuario`
+    FOREIGN KEY (`id_user`) REFERENCES `usuario` (`id_user`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
